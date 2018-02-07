@@ -29,7 +29,7 @@ class Initializer{
     pinMode(LSENSEIN,INPUT);
     pinMode(RSENSEIN,INPUT);
      //for activating blue filter for the initial position 
-     digitalWrite(S2,LOW);
+    digitalWrite(S2,LOW);
     digitalWrite(S3,HIGH);
     
   };

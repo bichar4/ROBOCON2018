@@ -7,7 +7,7 @@
 typedef int MotorDirection;
 const MotorDirection FORWARD = 1, BACKWARD = -1, STOP = 0;
 int maxRPM = 200;
-int errorPosition = 0;
+int previousError = 0;
 class Bot{
   Sensor leftSensor,rightSensor;
 
@@ -80,28 +80,54 @@ class Bot{
    int getError(){
   int error = 0;
   
-    if (leftSensor.getColor(LSENSEIN,BLUE) == WHITE && rightSensor.getColor(RSENSEIN,BLUE)== WHITE){
+    if (leftSensor.getColor(leftSensor.sensorOutput,BLUE) == WHITE && rightSensor.getColor(rightSensor.sensorOutput,BLUE)== WHITE){
       error = 0;
-      errorPosition = 0;
+      previousError = 0;
       }
     if (leftSensor.getColor(LSENSEIN,BLUE) == WHITE && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK)){ 
       error = 1;
-      errorPosition = 1;
+      previousError= 1;
       }
-    if ((leftSensor.getColor(LSENSEIN,BLUE) == YELLOW || leftSensor.getColor(LSENSEIN,BLUE) == BLACK) && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK) && errorPosition==1 ){
+    if ((leftSensor.getColor(LSENSEIN,BLUE) == YELLOW || leftSensor.getColor(LSENSEIN,BLUE) == BLACK) && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK) && previousError==1 ){
       error = 2;
       }
     if ((leftSensor.getColor(RSENSEIN,BLUE)== YELLOW ||leftSensor.getColor(RSENSEIN,BLUE)== BLACK) && rightSensor.getColor(LSENSEIN,BLUE) == WHITE){
       error = -1;
-      errorPosition = -1;
+      previousError = -1;
       
       }
-    if ((leftSensor.getColor(LSENSEIN,BLUE) == YELLOW || leftSensor.getColor(LSENSEIN,BLUE) == BLACK) && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK) && errorPosition == -1){
-      error = 2;
+    if ((leftSensor.getColor(LSENSEIN,BLUE) == YELLOW || leftSensor.getColor(LSENSEIN,BLUE) == BLACK) && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK) && previousError == -1){
+      error = -2;
       }
     return error;
   }
-  
+
+  //test function or get POsition:
+//  int getPosition(){
+//      int position = 0;
+//  
+//    if (leftSensor.getColor(leftSensor.sensorOutput,BLUE) == WHITE && rightSensor.getColor(rightSensor.sensorOutput,BLUE)== WHITE){
+//      position = 0;
+//      previousposition = 0;
+//      }
+//    if (leftSensor.getColor(LSENSEIN,BLUE) == WHITE && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK)){ 
+//      position = 1;
+//      previousPosition= 1;
+//      }
+//    if ((leftSensor.getColor(LSENSEIN,BLUE) == YELLOW || leftSensor.getColor(LSENSEIN,BLUE) == BLACK) && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK) && previousError==1 ){
+//      position = 2;
+//      }
+//    if ((leftSensor.getColor(RSENSEIN,BLUE)== YELLOW ||leftSensor.getColor(RSENSEIN,BLUE)== BLACK) && rightSensor.getColor(LSENSEIN,BLUE) == WHITE){
+//      position = -1;
+//      previousPosition = -1;
+//      
+//      }
+//    if ((leftSensor.getColor(LSENSEIN,BLUE) == YELLOW || leftSensor.getColor(LSENSEIN,BLUE) == BLACK) && (rightSensor.getColor(RSENSEIN,BLUE)== YELLOW || rightSensor.getColor(RSENSEIN,BLUE)== BLACK) && previousError == -1){
+//      position = -2;
+//      }
+//    return position;
+//  }
+//  
  };
  
 #endif

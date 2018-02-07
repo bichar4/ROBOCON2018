@@ -3,32 +3,33 @@
 
 #include "Setup.h"
 typedef int Color;
-enum Colors{YELLOW, WHITE, BLACK, BLUE, RED,GREEN, CLEAR};
+enum Colors{UNDEFINED = -1, YELLOW, WHITE, BLACK, BLUE, RED,GREEN, CLEAR };
 
 class Sensor{
- int sensorOutput;
- Color mean[3], sd[3];
+  
+  Color mean[3], sd[3];
   Color color[3]; 
-  public: 
-int getColor (int sensor, int colorFilter = BLUE){
- switch(colorFilter){
+public: 
+int sensorOutput;
+  int getColor (int sensor, int colorFilter = BLUE){
+    
+  switch(colorFilter){
     case BLUE:
-    digitalWrite(S2,LOW);
-    digitalWrite(S3,HIGH);
-     break;
+      digitalWrite(S2,LOW);
+      digitalWrite(S3,HIGH);
+      break;
     case RED:
-    digitalWrite(S2,LOW);
-    digitalWrite(S3,LOW);
-   
-    break;
+      digitalWrite(S2,LOW);
+      digitalWrite(S3,LOW);
+      break;
     case GREEN:
-    digitalWrite(S2,HIGH);
-    digitalWrite(S3,HIGH);
-    break;
+      digitalWrite(S2,HIGH);
+      digitalWrite(S3,HIGH);
+      break;
     case CLEAR:
-     digitalWrite(S2,HIGH);
-    digitalWrite(S3,LOW);
-    break;    
+      digitalWrite(S2,HIGH);
+      digitalWrite(S3,LOW);
+      break;    
  } 
  int frequency = pulseIn(sensor, LOW);
  
@@ -43,20 +44,21 @@ int getColor (int sensor, int colorFilter = BLUE){
     Serial.println('BLACK');
     return BLACK;
   }
+  return UNDEFINED;
  };
 
 void attach( int pinNo){
   sensorOutput = pinNo;
 };
  
- void calibrate(){
+  void calibrate(){
   
- mean[YELLOW] = 383;
- mean[WHITE] =190;
- mean[BLACK]=1210;
- sd[YELLOW] = 12;
- sd[WHITE]= 8;
- sd[WHITE]= 81;
+   mean[YELLOW] = 383;
+   mean[WHITE] =190;
+   mean[BLACK]=1210;
+   sd[YELLOW] = 12;
+   sd[WHITE]= 8;
+   sd[WHITE]= 81;
    
  };
  
