@@ -9,10 +9,13 @@
 #define RIGHTMOTORP 4
 #define RIGHTMOTORM 5
 #define RIGHTMOTORPWM 6
-#define LSENSEIN 7 
+#define LSENSEIN 9
 #define RSENSEIN 8
-#define S2 9
-#define S3 10
+#define S0 9
+#define S1 10
+#define S2 11
+#define S3 12
+
 #define MOTORPc 100 //this is nothing :)
 
 class Initializer{
@@ -31,6 +34,9 @@ class Initializer{
      //for activating blue filter for the initial position 
     digitalWrite(S2,LOW);
     digitalWrite(S3,HIGH);
+    //fo setting up the frequency
+    digitalWrite(S0,LOW);
+    digitalWrite(S1,HIGH);
     
   };
 };

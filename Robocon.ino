@@ -15,5 +15,7 @@ bot.initializeBotSensor();
 
 void loop() {
   // put your main code here, to run repeatedly:
+  Serial.println(bot.getError());
+  //Serial.println(pulseIn(LSENSEIN,LOW));
 
 }

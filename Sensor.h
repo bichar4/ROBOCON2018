@@ -7,9 +7,10 @@ enum Colors{UNDEFINED = -1, YELLOW, WHITE, BLACK, BLUE, RED,GREEN, CLEAR };
 
 class Sensor{
   
-  Color mean[3], sd[3];
-  Color color[3]; 
+ 
 public: 
+  Color mean[3], sd[3];
+  //Color color[3];
 int sensorOutput;
   int getColor (int sensor, int colorFilter = BLUE){
     
@@ -32,18 +33,20 @@ int sensorOutput;
       break;    
  } 
  int frequency = pulseIn(sensor, LOW);
- 
+
+
   if(frequency >= mean[YELLOW]-sd[YELLOW] && frequency <= mean[YELLOW]+sd[YELLOW]){
-    Serial.println('YELLOW');
+    //Serial.println('Y');
     return YELLOW;  
   }else if (frequency >= mean[WHITE]-sd[WHITE] && frequency <= mean[WHITE]+sd[WHITE])
   {
-    Serial.println('WHITE');
+    //Serial.println('W');
     return WHITE; 
   }else if (frequency >= mean[BLACK]-sd[BLACK] && frequency <= mean[BLACK]+sd[BLACK]){
-    Serial.println('BLACK');
+    //Serial.println('B');
     return BLACK;
   }
+  //Serial.println("No");
   return UNDEFINED;
  };
 
@@ -53,12 +56,15 @@ void attach( int pinNo){
  
   void calibrate(){
   
-   mean[YELLOW] = 383;
-   mean[WHITE] =190;
+   mean[YELLOW] = 349;
+   mean[WHITE] =161;
    mean[BLACK]=1210;
-   sd[YELLOW] = 12;
-   sd[WHITE]= 8;
-   sd[WHITE]= 81;
+   sd[YELLOW] = 35;
+   sd[WHITE]= 35;
+   sd[BLACK]= 81;
+
+   Serial.println("IMC");
+   
    
  };
  
