@@ -2,23 +2,23 @@
 #define SETUP
 
 
-#define LEFTMOTORPWM 2
-#define LEFTMOTORP 4
-#define LEFTMOTORM 3
+#define LEFTMOTORPWM 10
+#define LEFTMOTORP 8
+#define LEFTMOTORM 9
 
-#define RIGHTMOTORP 5
-#define RIGHTMOTORM 6
-#define RIGHTMOTORPWM 7
+#define RIGHTMOTORP 11
+#define RIGHTMOTORM 12
+#define RIGHTMOTORPWM 13
 
-#define LSENSEIN 9  //these are use for calibration
-#define RSENSEIN 8
+#define LSENSEIN 4  //these are use for calibration
+#define RSENSEIN 3
 
-#define LEFTSENSEIN 14  // theese are left most sensor and right most sensor 
-#define RIGHTSENSEIN 15
-#define S0 9
-#define S1 10
-#define S2 11
-#define S3 12
+#define LEFTSENSEIN 5   // theese are left most sensor and right most sensor 
+#define RIGHTSENSEIN 2
+#define S0 90
+#define S1 101
+#define S2 23
+#define S3 45
 
 #define MOTORPc 100 //this is nothing :)
 

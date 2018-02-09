@@ -31,10 +31,11 @@ class Bot{
    }
     
     void initializeBotSensor(){
-     leftSensor.calibrate();
-     rightSensor.calibrate();
-     leftMostSensor.calibrate();
-     rightMostSensor.calibrate();     
+        leftMostSensor.calibrate(576,421,1400,90,58,200);
+     leftSensor.calibrate(458,311,1400,75,65,200);
+       rightSensor.calibrate(418,303,1400,60,40,200);
+   
+       rightMostSensor.calibrate(471,288,1300,30,30,200);     
     };
 
     void stopMoving(){
@@ -43,8 +44,14 @@ class Bot{
   };
   
     void testSensor(){
+      leftMostSensor.getColor(LEFTSENSEIN,BLUE);
+      Serial.print("===");
       leftSensor.getColor(LSENSEIN ,BLUE);
+      Serial.print("===");
       rightSensor.getColor(RSENSEIN,BLUE);
+      Serial.print("===");
+      rightMostSensor.getColor(RIGHTSENSEIN,BLUE);
+      Serial.println(" ");
     }
     
     void leftMotor(MotorDirection motorDirection){
@@ -91,6 +98,7 @@ class Bot{
     }while(leftFlag !=1);
     
   }
+  
    void moveForward(int leftRPM, int rightRPM){
     int rightPWM, leftPWM;
     rightPWM = (rightRPM*255/maxRPM);

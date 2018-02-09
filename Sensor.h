@@ -34,17 +34,17 @@ int sensorOutput;
  } 
  int frequency = pulseIn(sensor, LOW);
   if(frequency >= mean[YELLOW]-sd[YELLOW] && frequency <= mean[YELLOW]+sd[YELLOW]){
-    //Serial.println('Y');
+    Serial.print('Y');
     return YELLOW;  
   }else if (frequency >= mean[WHITE]-sd[WHITE] && frequency <= mean[WHITE]+sd[WHITE])
   {
-    //Serial.println('W');
+    Serial.print('W');
     return WHITE; 
   }else if (frequency >= mean[BLACK]-sd[BLACK] && frequency <= mean[BLACK]+sd[BLACK]){
-    //Serial.println('B');
+    Serial.print('B');
     return BLACK;
   }
-  //Serial.println("No");
+  Serial.print("No");
   return UNDEFINED;
  };
 
@@ -52,14 +52,14 @@ void attach( int pinNo){
   sensorOutput = pinNo;
 };
  
-  void calibrate(){
+  void calibrate(int yellowmean,int whitemean,int blackmean,int yellowsd,int whitesd,int blacksd){
   
-   mean[YELLOW] = 349;
-   mean[WHITE] =161;
-   mean[BLACK]=1210;
-   sd[YELLOW] = 35;
-   sd[WHITE]= 35;
-   sd[BLACK]= 81;
+   mean[YELLOW] = yellowmean;
+   mean[WHITE] = whitemean;
+   mean[BLACK]= blackmean;
+   sd[YELLOW] = yellowsd;
+   sd[WHITE]= whitesd;
+   sd[BLACK]= blacksd;
 
    Serial.println("IMC");
    
