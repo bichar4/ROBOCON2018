@@ -3,6 +3,7 @@
 
 #include "Setup.h"
 typedef int Color;
+
 enum Colors{UNDEFINED = -1, YELLOW, WHITE, BLACK, BLUE, RED,GREEN, CLEAR };
 
 class Sensor{
@@ -12,29 +13,26 @@ public:
   Color mean[3], sd[3];
   //Color color[3];
 int sensorOutput;
-  int getColor (int sensor, int colorFilter = BLUE){
-    
-  switch(colorFilter){
-    case BLUE:
-      digitalWrite(S2,LOW);
-      digitalWrite(S3,HIGH);
-      break;
-    case RED:
-      digitalWrite(S2,LOW);
-      digitalWrite(S3,LOW);
-      break;
-    case GREEN:
-      digitalWrite(S2,HIGH);
-      digitalWrite(S3,HIGH);
-      break;
-    case CLEAR:
-      digitalWrite(S2,HIGH);
-      digitalWrite(S3,LOW);
-      break;    
+  int getColor (int sensor, int colorFilter = BLUE){   
+    switch(colorFilter){
+      case BLUE:
+        digitalWrite(S2,LOW);
+        digitalWrite(S3,HIGH);
+        break;
+      case RED:
+        digitalWrite(S2,LOW);
+        digitalWrite(S3,LOW);
+        break;
+      case GREEN:
+        digitalWrite(S2,HIGH);
+        digitalWrite(S3,HIGH);
+        break;
+      case CLEAR:
+        digitalWrite(S2,HIGH);
+        digitalWrite(S3,LOW);
+        break;    
  } 
  int frequency = pulseIn(sensor, LOW);
-
-
   if(frequency >= mean[YELLOW]-sd[YELLOW] && frequency <= mean[YELLOW]+sd[YELLOW]){
     //Serial.println('Y');
     return YELLOW;  
