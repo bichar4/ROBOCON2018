@@ -3,7 +3,7 @@
 #include "Sensor.h"
 #include "Bot.h"
 #include "Setup.h"
-
+#include "Helper.h"
 
 Bot bot;
 int gameMode;
