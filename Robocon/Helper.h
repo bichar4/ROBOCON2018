@@ -66,6 +66,8 @@ class Helper{
     }
     Serial.println(" ");
     Serial.println("========================");
+    delay(1000);  
+    exit(0);
   };
 
 };

@@ -20,8 +20,7 @@ void setup() {
   gameMode = EEPROM.read(0);
   Serial.begin(9600);
   h.SensorCalibration();
-  delay(1000);  
-   exit(0);
+
 }
 
 void loop() {
