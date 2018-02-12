@@ -3,6 +3,7 @@
 
 #define ERRORCOUNT 5
 
+#define BUZZERPIN 7
 #define LEFTMOTORPWM 13
 #define LEFTMOTORP 11
 #define LEFTMOTORM 12
@@ -32,6 +33,7 @@ class Initializer{
     pinMode(RIGHTMOTORP,OUTPUT);
     pinMode(RIGHTMOTORM,OUTPUT);
     pinMode(RIGHTMOTORPWM,OUTPUT);
+    pinMode(BUZZERPIN,OUTPUT);
     pinMode(S2,OUTPUT);
     pinMode(S3,OUTPUT);
     pinMode(LSENSEIN,INPUT);
