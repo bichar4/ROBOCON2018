@@ -6,6 +6,7 @@
 #include "Helper.h"
 
 Bot bot;
+Helper h;
 int gameMode;
 int direction = 0;
 int nodeCount = 0;
@@ -18,7 +19,9 @@ void setup() {
   bot.initializeBotSensor();
   gameMode = EEPROM.read(0);
   Serial.begin(9600);
+  h.SensorCalibration();
   delay(1000);  
+   exit(0);
 }
 
 void loop() {

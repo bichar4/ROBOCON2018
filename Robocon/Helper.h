@@ -12,15 +12,15 @@ class Helper{
     void indicate(int n){
       int i=0;
       for(i=0;i<n;i++){
-        delay(1000);
-        digitalWrite(13,HIGH);
-        delay(100);
-        digitalWrite(13,LOW);
-        delay(100);
+        digitalWrite(BUZZERPIN ,HIGH);
+        delay(200);
+        digitalWrite(BUZZERPIN ,LOW);
+        delay(200);
       } 
    };
 
    void SensorCalibration(){
+    delay(1000);
       for(int i=0;i<MAXSIZE;i++){
         frequency[0] = pulseIn(LEFTSENSEIN , LOW);
         frequency[1] = pulseIn(LSENSEIN,LOW);
