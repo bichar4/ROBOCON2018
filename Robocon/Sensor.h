@@ -63,12 +63,14 @@ public:
    int frequency = pulseIn(sensor, LOW);
    if(frequency >= mean[YELLOW]-sd[YELLOW] && frequency <= mean[YELLOW]+sd[YELLOW]){
       Serial.print('Y');
+      Serial.print("====");
       return YELLOW;  
    }else if (frequency >= mean[WHITE]-sd[WHITE] && frequency <= mean[WHITE]+sd[WHITE]){
       Serial.print('W');
+      Serial.print("====");
       return WHITE; 
      }else if (frequency >= mean[BLACK]-sd[BLACK] && frequency <= mean[BLACK]+sd[BLACK]){
-        Serial.print('B');
+        Serial.println('B');
         return BLACK;
       }
    Serial.print("No");

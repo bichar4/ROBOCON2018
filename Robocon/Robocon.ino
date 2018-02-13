@@ -10,8 +10,8 @@ Helper h;
 int gameMode;
 int direction = 0;
 int nodeCount = 0;
-int delays[4] ={500,30,0,50}; 
-float speedFactor[4] = {1,0.5,0.1,0.5};
+int delays[4] ={1500,1000,00,1000}; 
+//float speedFactor[4] = {1,0.5,0.1,0.5};
   
 void setup() {
   //parameter is in setup header.
@@ -19,32 +19,40 @@ void setup() {
   bot.initializeBotSensor();
   gameMode = EEPROM.read(0);
   Serial.begin(9600);
-  h.SensorCalibration();
-
+    //h.SensorCalibration();
 }
 
 void loop() {
   //Serial.println(gameMode); 
  if(gameMode!='A'){
    bot.changeMode('A');
-   bot.buzzer(1,2000);
+   bot.buzzer(1,1000);
    //exit(0);
-   while(1){
+   while(0){
+    //bot.moveForward(50,50);
     bot.testSensor();
    }
-   float RPM = 25, rightRPM, leftRPM;
+   float RPM = 50, rightRPM, leftRPM;
    int error = 0;
-   int Kp = 8;
+   int Kp = 30;
    int leftCount = 0;
    int rightCount = 0;
    while(1){
-     error = bot.getError();
-     Serial.println(error);
-     rightRPM = (RPM + Kp * error); leftRPM = (RPM - Kp * error);
+    
+    while(0){
+      Sensor s1;
+      Serial.println(s1.getColor(RSENSEIN));
+      error = bot.getError();
+      Serial.println(error);    
+    }
+
+
+    error = bot.getError();
+    leftRPM = (RPM - Kp * error);
+    rightRPM = (RPM + Kp * error);
+    
      bot.moveForward(leftRPM,rightRPM);
-     rightRPM = rightRPM*speedFactor[(nodeCount%4)];
-     leftRPM = leftRPM *speedFactor[(nodeCount%4)];
-     direction = bot.isDirection();
+     direction = 0; //bot.isDirection();
      if(direction >0){
       if(direction ==LEFT)leftCount+=1;
       if(direction ==RIGHT)rightCount+=1;
@@ -52,28 +60,34 @@ void loop() {
       leftCount = 0;
       rightCount=0;
      }
+     
      if(leftCount>=2){  
-      delay(delays[nodeCount%4]);
+      bot.buzzer(1);
       nodeCount++;
+      delay(delays[nodeCount%4-1]);
       bot.stopMoving();
-      bot.buzzer((nodeCount%4)); 
-      delay(2000);  
-      bot.moveLeft(55);
-     }
-     if(rightCount >=2){      
-      delay(delays[nodeCount%4]);
-      nodeCount++;
-      bot.stopMoving();
+      delay(1000);  
       bot.buzzer((nodeCount%4));
-      delay(2000); 
-      bot.moveRight(55);     
+      bot.moveLeft();
+      leftCount = 0;
+     }
+     
+     if(rightCount >=2){      
+      bot.buzzer(1);
+      nodeCount++;
+      delay(delays[nodeCount%4]);
+      bot.stopMoving();
+      delay(1000);
+      bot.buzzer((nodeCount%4)); 
+      bot.moveRight();
+      rightCount  = 0;     
    }
   }
  }
 
   if(gameMode=='A'){                                                                                                                                                                             
     bot.changeMode('B');
-    bot.buzzer(5);
+    bot.buzzer(3);
     //exit(0);
     while(1){
      bot.moveForward(maxRPM,maxRPM);

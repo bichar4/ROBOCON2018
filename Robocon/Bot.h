@@ -37,11 +37,12 @@ class Bot{
       return UNDEFINED;
    }
     
-    void initializeBotSensor(){   
-      leftMostSensor.calibrate(765,432,1300,150,140,350);
-      leftSensor.calibrate(885,512,1350,150,150,250);
-      rightSensor.calibrate(813,476,1300,150,150,250);
-      rightMostSensor.calibrate(587,320,1100,100,150,300);     
+    void initializeBotSensor(){ 
+      //calibrate(int yellowmean,int whitemean,int blackmean,int yellowsd,int whitesd,int blacksd)  
+      leftMostSensor.calibrate(1022,650,1600,150,100,300);
+      leftSensor.calibrate(1150,765,1600,200,100,300);
+      rightSensor.calibrate(1022,760,1600,100,100,300);
+      rightMostSensor.calibrate(1150,710,1600,200,100,300);     
     };
 
     void stopMoving(){
@@ -110,12 +111,35 @@ class Bot{
   
    void moveForward(int leftRPM, int rightRPM){
     int rightPWM, leftPWM;
+    if(rightRPM>=50){
+      rightRPM = 50;  
+    }
+    if(leftRPM>=50){
+      leftRPM = 50;  
+    }
+
+    if(rightRPM<=10){
+      rightRPM = 10;  
+    }
+    if(leftRPM<=10){
+      leftRPM = 10;  
+    }
+    
+    
     rightPWM = (rightRPM*255/maxRPM);
     leftPWM = (leftRPM*255/maxRPM);
+    
+    int leftDirection = FORWARD, rightDirection = FORWARD;
+
+    if(rightPWM < 80) rightDirection = STOP;
+    if(leftPWM < 80) leftDirection = STOP;
+
+    
     analogWrite(LEFTMOTORPWM, leftPWM);
     analogWrite(RIGHTMOTORPWM, rightPWM);
-    leftMotor(FORWARD);
-    rightMotor(FORWARD);
+    
+    leftMotor(leftDirection);
+    rightMotor(rightDirection);
   };
 
    void moveBackward(int leftRPM, int rightRPM){
