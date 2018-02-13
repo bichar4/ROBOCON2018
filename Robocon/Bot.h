@@ -6,12 +6,14 @@
 #include <EEPROM.h>
 
 typedef int MotorDirection;
-enum Direction{LEFT =1,RIGHT};
+enum Direction{LEFT =1,RIGHT,END};
+enum Ways{WAY =1,NOWAY,LEFTLOCK,RIGHTLOCK};
 const MotorDirection FORWARD = 1, BACKWARD = -1, STOP = 0;
 int maxRPM = 50;
 int recordedError;
 int previousError = 0;
 int previousPostion =0;
+  
 
 
 class Bot{
@@ -20,7 +22,22 @@ class Bot{
    public:
    
     int detectWay(){
-      return UNDEFINED;
+      int rightMostColor = rightMostSensor.getColor(RIGHTSENSEIN,'A' );
+      int rightColor = rightSensor.getColor(RSENSEIN,'A');
+      int leftMostColor = leftMostSensor.getColor(LEFTSENSEIN,'A');
+      int leftColor = leftSensor.getColor(LSENSEIN,'A');
+      if(leftMostColor ==YELLOW && leftColor == YELLOW && rightColor ==YELLOW && rightMostColor == YELLOW){       
+        return WAY;
+      }
+      else if(leftMostColor!=YELLOW){
+        return LEFTLOCK;
+      }
+      else if(rightMostColor!=YELLOW){
+        return RIGHTLOCK;
+      }
+      else{
+        return NOWAY;
+      }
     }
     
     int isDirection(){
@@ -28,21 +45,30 @@ class Bot{
       int rightColor = rightSensor.getColor(RSENSEIN);
       int leftMostColor = leftMostSensor.getColor(LEFTSENSEIN);
       int leftColor = leftSensor.getColor(LSENSEIN);
+      
       if(leftMostColor == WHITE && (leftColor == WHITE || leftColor == UNDEFINED) ){
         return LEFT; 
       }
       if(rightMostColor ==WHITE && (rightColor == WHITE || rightColor ==UNDEFINED)){
         return RIGHT;
       }
+      if(rightMostColor ==WHITE && rightColor == WHITE && leftColor == WHITE && leftMostColor == WHITE){
+        return END;
+      }
+      
       return UNDEFINED;
    }
     
     void initializeBotSensor(){ 
       //calibrate(int yellowmean,int whitemean,int blackmean,int yellowsd,int whitesd,int blacksd)  
-      leftMostSensor.calibrate(1022,650,1600,150,100,300);
-      leftSensor.calibrate(1150,765,1600,200,100,300);
-      rightSensor.calibrate(1022,760,1600,100,100,300);
-      rightMostSensor.calibrate(1150,710,1600,200,100,300);     
+      //1021.00 1057.00 1223.00 821.00
+        Serial.println("NCMA");
+      leftMostSensor.calibrate(1050,685,1500,150,70,200);
+      leftSensor.calibrate(1100,700,1500,200,100,200);
+      rightSensor.calibrate(930,500,1500,175,100,200);
+      rightMostSensor.calibrate(1200,704,1500,150,120,200);
+      
+      
     };
 
     void stopMoving(){
@@ -50,15 +76,16 @@ class Bot{
       rightMotor(STOP);   
   };
   
-    void testSensor(){
-      leftMostSensor.getColor(LEFTSENSEIN);
+    void testSensor(int mode = 'B'){
+      leftMostSensor.getColor(LEFTSENSEIN,mode);
       Serial.print("===");
-      leftSensor.getColor(LSENSEIN );
+      leftSensor.getColor(LSENSEIN,mode );
       Serial.print("===");
-      rightSensor.getColor(RSENSEIN);
+      rightSensor.getColor(RSENSEIN,mode);
       Serial.print("===");
-      rightMostSensor.getColor(RIGHTSENSEIN);
+      rightMostSensor.getColor(RIGHTSENSEIN,mode);
       Serial.println(" ");
+      
     }
     
     void leftMotor(MotorDirection motorDirection){
@@ -80,6 +107,33 @@ class Bot{
       }
   };
 
+   void rotate180(){
+    analogWrite(LEFTMOTORPWM,150);
+    analogWrite(RIGHTMOTORPWM,150);
+    leftMotor(FORWARD);
+    rightMotor(BACKWARD);
+    delay(700);
+    stopMoving();
+    delay(100);
+   }
+   void rotateRight(int rightRPM = 50){
+       int  rightPWM = (rightRPM*255/maxRPM);
+      int leftPWM = (rightRPM*255/maxRPM);
+      analogWrite(LEFTMOTORPWM, leftPWM);
+      analogWrite(RIGHTMOTORPWM, rightPWM);
+       leftMotor(FORWARD);
+        rightMotor(BACKWARD);
+        delay(1000);
+   }
+    void rotateLeft(int leftRPM = 50){
+       int  rightPWM = (leftRPM*255/maxRPM);
+      int leftPWM = (leftRPM*255/maxRPM);
+      analogWrite(LEFTMOTORPWM, leftPWM);
+      analogWrite(RIGHTMOTORPWM, rightPWM);
+       leftMotor(BACKWARD);
+        rightMotor(FORWARD);
+        delay(1000);
+   }
     void moveRight(int rightRPM = 50){
       int  rightPWM = (rightRPM*255/maxRPM);
       int leftPWM = (rightRPM*255/maxRPM);
@@ -102,6 +156,7 @@ class Bot{
     do{
       leftMotor(BACKWARD);
       rightMotor(FORWARD);
+      delay(100);
     } while( leftSensor.getColor(LSENSEIN)!=WHITE);
     //delay(500);
     stopMoving();

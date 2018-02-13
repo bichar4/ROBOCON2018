@@ -41,25 +41,8 @@ public:
 //     }
 //  };      
 
-  int getColor (int sensor, int colorFilter = BLUE){   
-    switch(colorFilter){
-      case BLUE:
-        digitalWrite(S2,LOW);
-        digitalWrite(S3,HIGH);
-        break;
-      case RED:
-        digitalWrite(S2,LOW);
-        digitalWrite(S3,LOW);
-        break;
-      case GREEN:
-        digitalWrite(S2,HIGH);
-        digitalWrite(S3,HIGH);
-        break;
-      case CLEAR:
-        digitalWrite(S2,HIGH);
-        digitalWrite(S3,LOW);
-        break;    
-      } 
+  int getColor (int sensor,int gameMode = 'B'){
+    if(gameMode =='B'){ 
    int frequency = pulseIn(sensor, LOW);
    if(frequency >= mean[YELLOW]-sd[YELLOW] && frequency <= mean[YELLOW]+sd[YELLOW]){
       Serial.print('Y');
@@ -73,8 +56,19 @@ public:
         Serial.println('B');
         return BLACK;
       }
-   Serial.print("No");
+   Serial.print("UNDEFINED");
    return UNDEFINED;
+    }
+    if(gameMode =='A'){
+      int frequency = pulseIn(sensor, LOW);
+      if(frequency<=1400){
+        Serial.print('Y');
+        Serial.print("====");
+        return YELLOW;
+      }
+      Serial.println("UNDEFINED");
+      return UNDEFINED;
+    }
  };
   void calibrate(int yellowmean,int whitemean,int blackmean,int yellowsd,int whitesd,int blacksd){
    mean[YELLOW] = yellowmean;
