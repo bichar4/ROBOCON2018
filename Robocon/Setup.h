@@ -22,6 +22,9 @@
 #define S2 23
 #define S3 45
 
+#define FAN 0
+#define BLOWER 1
+
 #define MOTORPc 100 //this is nothing :)
 
 class Initializer{

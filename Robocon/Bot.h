@@ -63,10 +63,10 @@ class Bot{
       //calibrate(int yellowmean,int whitemean,int blackmean,int yellowsd,int whitesd,int blacksd)  
       //1021.00 1057.00 1223.00 821.00
         Serial.println("NCMA");
-      leftMostSensor.calibrate(1050,685,1500,150,70,200);
-      leftSensor.calibrate(1100,700,1500,200,100,200);
-      rightSensor.calibrate(930,500,1500,175,100,200);
-      rightMostSensor.calibrate(1200,704,1500,150,120,200);
+      leftMostSensor.calibrate(865,490,1450,100,80,200);
+      leftSensor.calibrate(550,340,1045,80,80,200);
+      rightSensor.calibrate(660,380,1420,150,80,200);
+      rightMostSensor.calibrate(760,400,1420,100,100,200);
       
       
     };
