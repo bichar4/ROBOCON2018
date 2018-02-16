@@ -52,7 +52,12 @@ public:
       Serial.print('W');
       Serial.print("====");
       return WHITE; 
-     }else if (frequency >= mean[BLACK]-sd[BLACK] && frequency <= mean[BLACK]+sd[BLACK]){
+     }
+//     else if (frequency >= mean[BLACK]-sd[BLACK] && frequency <= mean[BLACK]+sd[BLACK]){
+//        Serial.println('B');
+//        return BLACK;
+//      }
+       else if (frequency >= mean[BLACK]-sd[BLACK]){
         Serial.println('B');
         return BLACK;
       }

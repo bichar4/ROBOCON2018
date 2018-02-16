@@ -9,9 +9,12 @@
 
 Bot bot;
 Helper h;
+unsigned long interval = 2000;
+unsigned long previousMillis = 0;
+
 int gameMode;
 int direction = 0;
-int nodeCount = 1;
+int nodeCount = 0;
 int delays[4] ={0,400,700,400}; 
 //float speedFactor[4] = {1,0.5,0.1,0.5};
   
@@ -21,7 +24,6 @@ void setup() {
    Serial.begin(9600);
   gameMode = EEPROM.read(0);
   bot.initializeBotSensor();
-
 
   while(0){
   h.SensorCalibration();
@@ -35,7 +37,7 @@ void loop() {
    bot.changeMode('A');
    bot.buzzer(1,1000);
    //exit(0);
-   while(1){
+   while(0){
     //bot.moveForward(50,50);
     bot.testSensor(gameMode);
    }
@@ -46,12 +48,14 @@ void loop() {
    int rightCount = 0;
    while(1){
     
-    while(0){
-      Sensor s1;
-      Serial.println(s1.getColor(RSENSEIN));
-      error = bot.getError();
-      Serial.println(error);    
-    }
+    bot.startFan();
+    if(bot.isDirection() == END){
+      bot.stopMoving();
+      bot.changeMode('A');
+      bot.buzzer(15,80);
+      exit(0);
+       
+   }
 
 
     error = bot.getError();
@@ -71,33 +75,39 @@ void loop() {
      if(leftCount>=2){  
       bot.buzzer(1);
       nodeCount++;
-      if(nodeCount ==1 || nodeCount == 8)continue;       
+      if(nodeCount ==1 || nodeCount>= 8){          
+        leftCount = 0;
+        rightCount = 0;
+        continue;       
+      }
+      bot.stopFan();
       delay(delays[nodeCount%4]);
       bot.stopMoving();
       delay(1000);  
       bot.buzzer((nodeCount%4));
-      bot.moveLeft();
+      
+       bot.moveLeft();
       leftCount = 0;
      }
      
      if(rightCount >=2){      
       bot.buzzer(1);
       nodeCount++;
-      if(nodeCount ==1 || nodeCount == 8)continue;
+      if(nodeCount ==1 || nodeCount >= 8){
+        leftCount = 0;
+        rightCount = 0;
+        continue;   
+      }
+      bot.stopFan();
       delay(delays[nodeCount%4]);
       bot.stopMoving();
       delay(1000);
       bot.buzzer((nodeCount%4)); 
-      bot.moveRight();
+      
+       bot.moveRight();
       rightCount  = 0;     
    }
-   if(bot.isDirection() == END){
-      bot.stopMoving();
-      bot.changeMode('A');
-      bot.buzzer(15,80);
-      exit(0);
-       
-   }
+  
   }
  }
   
@@ -105,7 +115,10 @@ void loop() {
     bot.changeMode('B');
     bot.buzzer(3);
     //exit(0);
-    
+    bot.moveBackward(35,35);
+    delay(5000);
+    bot.rotate180();
+    delay(100);
     while(1){
           bot.moveForward(35,35);
           if(bot.detectWay()==NOWAY){

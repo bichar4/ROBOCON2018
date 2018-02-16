@@ -6,7 +6,7 @@
 #include <EEPROM.h>
 
 typedef int MotorDirection;
-enum Direction{LEFT =1,RIGHT,END};
+enum Direction{LEFT =1,RIGHT,END,JUNCTION};
 enum Ways{WAY =1,NOWAY,LEFTLOCK,RIGHTLOCK};
 const MotorDirection FORWARD = 1, BACKWARD = -1, STOP = 0;
 int maxRPM = 50;
@@ -14,13 +14,41 @@ int recordedError;
 int previousError = 0;
 int previousPostion =0;
   
+class Blower{
+  public:
+    void startIt(int pinNo){
+      digitalWrite(pinNo,HIGH);
+    };
 
+    void stopIt(int pinNo){
+      digitalWrite(pinNo,LOW);
+    };
+    
+
+};
 
 class Bot{
+    Blower fan,cleaner;
    Sensor leftSensor,rightSensor,leftMostSensor,rightMostSensor;
    int leftPWM,rightPWM;
    public:
-   
+
+     void startFan(){
+      fan.startIt(FAN);
+     }
+
+     void stopFan(){
+      fan.stopIt(FAN);
+     }
+
+     void startCleaner(){
+      cleaner.startIt(CLEANER);
+     }
+
+     void stopCleaner(){
+      cleaner.stopIt(CLEANER); 
+     }
+     
     int detectWay(){
       int rightMostColor = rightMostSensor.getColor(RIGHTSENSEIN,'A' );
       int rightColor = rightSensor.getColor(RSENSEIN,'A');
@@ -39,7 +67,8 @@ class Bot{
         return NOWAY;
       }
     }
-    
+
+     
     int isDirection(){
       int rightMostColor = rightMostSensor.getColor(RIGHTSENSEIN );
       int rightColor = rightSensor.getColor(RSENSEIN);
@@ -52,7 +81,10 @@ class Bot{
       if(rightMostColor ==WHITE && (rightColor == WHITE || rightColor ==UNDEFINED)){
         return RIGHT;
       }
-      if(rightMostColor ==WHITE && rightColor == WHITE && leftColor == WHITE && leftMostColor == WHITE){
+      if(leftMostColor ==WHITE && leftColor ==WHITE && rightColor ==WHITE && rightMostColor ==WHITE){
+        return JUNCTION; 
+      }
+      if(rightMostColor ==BLACK && rightColor ==BLACK && leftColor == BLACK && leftMostColor == BLACK){
         return END;
       }
       
@@ -66,7 +98,7 @@ class Bot{
       leftMostSensor.calibrate(865,490,1450,100,80,200);
       leftSensor.calibrate(550,340,1045,80,80,200);
       rightSensor.calibrate(660,380,1420,150,80,200);
-      rightMostSensor.calibrate(760,400,1420,100,100,200);
+      rightMostSensor.calibrate(760,400,1420,100,150,200);
       
       
     };

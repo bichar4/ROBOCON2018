@@ -4,13 +4,13 @@
 #define ERRORCOUNT 5
 
 #define BUZZERPIN 7
-#define LEFTMOTORPWM 13
-#define LEFTMOTORP 11
-#define LEFTMOTORM 12
+#define LEFTMOTORPWM 10
+#define LEFTMOTORP 8
+#define LEFTMOTORM 9
 
-#define RIGHTMOTORP 8
-#define RIGHTMOTORM 9
-#define RIGHTMOTORPWM 10
+#define RIGHTMOTORP 11
+#define RIGHTMOTORM 12
+#define RIGHTMOTORPWM 13
 
 #define LSENSEIN 4  //these are use for calibration
 #define RSENSEIN 3
@@ -22,8 +22,8 @@
 #define S2 23
 #define S3 45
 
-#define FAN 0
-#define BLOWER 1
+#define FAN 15
+#define CLEANER 14
 
 #define MOTORPc 100 //this is nothing :)
 
