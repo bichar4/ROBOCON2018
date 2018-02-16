@@ -9,13 +9,13 @@
 
 Bot bot;
 Helper h;
-unsigned long interval = 2000;
-unsigned long previousMillis = 0;
+unsigned long interval = 4000;
+//unsigned long previousMillis = 0;
 
 int gameMode;
 int direction = 0;
-int nodeCount = 0;
-int delays[4] ={0,400,700,400}; 
+int nodeCount = 1;
+int delays[4] ={0,300,500,300}; 
 //float speedFactor[4] = {1,0.5,0.1,0.5};
   
 void setup() {
@@ -29,6 +29,8 @@ void setup() {
   h.SensorCalibration();
 }
 
+ 
+
 }
 
 void loop() {
@@ -36,6 +38,7 @@ void loop() {
  if(gameMode!='A'){
    bot.changeMode('A');
    bot.buzzer(1,1000);
+  // unsigned long currentMillis = millis();
    //exit(0);
    while(0){
     //bot.moveForward(50,50);
@@ -52,6 +55,7 @@ void loop() {
     if(bot.isDirection() == END){
       bot.stopMoving();
       bot.changeMode('A');
+      bot.stopFan();
       bot.buzzer(15,80);
       exit(0);
        
@@ -63,10 +67,20 @@ void loop() {
     rightRPM = (RPM + Kp * error);
     
      bot.moveForward(leftRPM,rightRPM);
+     if(millis()>=interval){           
      direction = bot.isDirection();
-     if(direction >0){
+     }
+     if(direction >0 && millis() >=interval){
       if(direction ==LEFT)leftCount+=1;
       if(direction ==RIGHT)rightCount+=1;
+      if(direction == JUNCTION) {
+        nodeCount+=1;
+        //bot.stopMoving();
+        //delay(1000);  
+      bot.buzzer(1);
+
+        continue;
+      }
      }else {
       leftCount = 0;
       rightCount=0;
@@ -84,7 +98,7 @@ void loop() {
       delay(delays[nodeCount%4]);
       bot.stopMoving();
       delay(1000);  
-      bot.buzzer((nodeCount%4));
+      bot.buzzer(1);
       
        bot.moveLeft();
       leftCount = 0;
@@ -102,7 +116,7 @@ void loop() {
       delay(delays[nodeCount%4]);
       bot.stopMoving();
       delay(1000);
-      bot.buzzer((nodeCount%4)); 
+      bot.buzzer(1); 
       
        bot.moveRight();
       rightCount  = 0;     
@@ -116,14 +130,16 @@ void loop() {
     bot.buzzer(3);
     //exit(0);
     bot.moveBackward(35,35);
-    delay(5000);
+    delay(4000);
+    bot.startFan();
+    bot.startCleaner();
     bot.rotate180();
     delay(100);
     while(1){
           bot.moveForward(35,35);
           if(bot.detectWay()==NOWAY){
             bot.stopMoving();  
-            bot.buzzer(10,100);
+            bot.buzzer(5,100);
             bot.moveBackward(30,30);
             delay(1500);
             bot.rotate180();
@@ -132,7 +148,7 @@ void loop() {
           }        
           if(bot.detectWay()==LEFTLOCK){
             bot.stopMoving();  
-            bot.buzzer(10,100);
+            bot.buzzer(5,100);
             bot.moveBackward(30,30);
             delay(1500);
             bot.rotateRight(40);
@@ -142,7 +158,7 @@ void loop() {
           }
           if(bot.detectWay()==RIGHTLOCK){
             bot.stopMoving();  
-            bot.buzzer(10,100);
+            bot.buzzer(5,100);
             bot.moveBackward(30,30);
             delay(1500);
             bot.rotateLeft(40);

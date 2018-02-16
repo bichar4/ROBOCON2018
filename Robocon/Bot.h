@@ -95,10 +95,10 @@ class Bot{
       //calibrate(int yellowmean,int whitemean,int blackmean,int yellowsd,int whitesd,int blacksd)  
       //1021.00 1057.00 1223.00 821.00
         Serial.println("NCMA");
-      leftMostSensor.calibrate(865,490,1450,100,80,200);
-      leftSensor.calibrate(550,340,1045,80,80,200);
-      rightSensor.calibrate(660,380,1420,150,80,200);
-      rightMostSensor.calibrate(760,400,1420,100,150,200);
+      leftMostSensor.calibrate(825,400,1450,200,250,200);
+      leftSensor.calibrate(550,310,1045,80,80,200);
+      rightSensor.calibrate(660,340,1420,150,120,200);
+      rightMostSensor.calibrate(730,400,1420,150,150,200);
       
       
     };
@@ -136,7 +136,7 @@ class Bot{
           break;        
         default:
           break;
-      }
+      }     
   };
 
    void rotate180(){
@@ -144,7 +144,7 @@ class Bot{
     analogWrite(RIGHTMOTORPWM,150);
     leftMotor(FORWARD);
     rightMotor(BACKWARD);
-    delay(700);
+    delay(1000);
     stopMoving();
     delay(100);
    }
